@@ -31,6 +31,6 @@ user_patterns = (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-	path(' ', views.NotFindPage, name="MainPage"),
+	path('', views.MainPage, name="MainPage"),
 	path('user/', include(user_patterns)),
 ]
