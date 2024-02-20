@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from .forms import User_LoginForm
 
 
@@ -43,7 +43,14 @@ def LoginPage(request):
 
 
 def ProfilePage(request):
-	pass
+
+
+	return render(request, "FuncPage/ProfilePage.html", {"status":200})
+
+
+def LogoutPage(request):
+	logout(request)
+	return redirect('/')
 
 
 
