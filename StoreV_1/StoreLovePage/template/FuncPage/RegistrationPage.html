@@ -1,0 +1,37 @@
+{% extends "BaseTamp/BaseBlock.html" %}
+
+{% block title %}Регистрация{% endblock title %}
+{% block content %}
+
+<div class="container d-flex align-items-center justify-content-evenly" style="height: 100vh; width: 100%;">
+	<div>
+		<div class="text-center m-5">
+			<h1>Регистрация</h1>
+		</div>
+
+		<form action="" method="post" class="m-5 d-flex flex-column justify-content-evenly align-items-center">
+			{% csrf_token %}
+			<div style="width: 300px;">
+				{% for field in form %}
+					<div class="mb-3">
+						<label class="form-label" for="{{field.auto_id}}">{{field.label}}</label>
+						<span>{{field}}</span>
+					</div>
+				{% endfor %}
+			</div>
+			<div class="d-flex flex-column align-items-center">
+				<div class="d-flex justify-content-center">
+					<div class="m-3">
+						<button type="submit" class="btn btn-success">Зарегистрироваться</button>
+					</div>
+					<div class="m-3">
+						<a class="btn btn-primary" href="/user/login">Войти</a>
+					</div>
+				</div>
+				<a class="btn btn-secondary" href="/">В меню</a>
+			</div>
+		</form>
+	</div>
+</div>
+
+{% endblock content %}

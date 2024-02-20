@@ -1,0 +1,44 @@
+{% extends "BaseTamp/BaseBlock.html" %}
+
+{% block title %}MainPage{% endblock title %}
+{% block content %}
+
+<div class="text-center container position-absolute top-50 start-50 translate-middle">
+
+	<div class="row" style="height: 50vh;">
+		<div class="d-flex justify-content-center flex-column h-75 col m-3 p-3 border rounded-4 " style="background-color: rgba(var(--bs-warning-rgb),100);">
+			<p class="h1"> Главная страница</p>
+			<p class="h2">статус подключения - {{status}}</p>
+		</div>
+
+		
+		{% if user.is_authenticated %}
+			<div class="d-flex justify-content-center flex-column h-75 col p-3 m-3 border rounded-4 ">
+				<p class="h1">{{ user.get_username }}</p>
+				<p class="h2">Добро пожаловать на шаблон Магазина продаж</p>
+				<div class="d-flex justify-content-evenly m-3">
+					<div>
+						<a href="/" class="btn btn-info"><p class="h4">Товары</p></a>
+					</div>
+					<div>
+						<a href="/user/profile" class="btn border"><p class="h4">Профиль</p></a>
+					</div>	
+				</div>
+			</div>
+		{% else %}
+			<div class="d-flex justify-content-sm-evenly flex-column h-75 col p-3 m-3 border rounded-4 ">
+				<p class="h1">Вам нужно войти в аккаунт</p>
+				<div>
+					<a href="/user/login" class="btn btn-danger"><p class="h4">Войти</p></a>
+				</div>
+			</div>
+		{% endif %}
+		</div>
+	</div>
+
+	
+
+</div>
+
+
+{% endblock content %}
