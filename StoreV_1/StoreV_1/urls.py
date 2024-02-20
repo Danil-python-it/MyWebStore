@@ -17,7 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from StoreLovePage import views
-
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 user_patterns = (
 	[
@@ -27,10 +29,27 @@ user_patterns = (
 		path("registration", views.RegistionPage, name="registration")
     ]
 )
+shop_patterns = (
+	[
+		path("list",views.ShopPage, name="List"),
+    ]
+)
+admin_patterns = (
+	[
+		path("category",views.CategoryCreatePage, name="crt"),
+    ]
+)
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+	path('AD_panel/', include(admin_patterns)),
 	path('', views.MainPage, name="MainPage"),
+	path('shop/', include(shop_patterns)),
 	path('user/', include(user_patterns)),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    urlpatterns += staticfiles_urlpatterns()

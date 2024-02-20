@@ -1,10 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from .forms import User_LoginForm, User_RegistrationForm
+from .forms import User_LoginForm, User_RegistrationForm, Category_create, ShopItems_create, PictureForShop_create
+from .models import Category, ShopItems, PictareForShop
 
 
-# Create your views here.
+# User_RegistrationForm,  
+
+# MainPage
+
 def MainPage(request):
 	context={
 		"status":200,
@@ -12,6 +16,7 @@ def MainPage(request):
 	return render(request, "FuncPage/MainPage.html", context)
 
 
+#UserPage
 def LoginPage(request):
 	if request.user.is_authenticated == True: return redirect("/user/profile")
 
@@ -86,12 +91,50 @@ def ProfilePage(request):
 	return render(request, "FuncPage/ProfilePage.html", {"status":200})
 
 
+#MainContent
+
+def ShopPage(request):
+	content = {
+		"category":Category.objects.all()
+	}
+	return render(request, "FuncPage/ShopPage.html", content)
+
+
+def CategoryCreatePage(request):
+	if request.user.is_superuser == False: return redirect("/shop/list")
+
+	if request.method == "POST":
+		form = Category_create(request.POST,request.FILES)
+		
+		if form.is_valid():
+			form.save()
+			return redirect("/shop/list")
+		else:
+			print("warning")
+			print(request)
+			print(request.POST)
+			print(request.FILES)
+			
+
+	else:
+		form = Category_create()
+
+	content = {
+		"status":200,
+		"form":form,
+	}
+
+	return render(request, "FuncPage/CreateModels/Category.html", content)
 
 
 
 
 
 
+
+
+
+#SpecialPage
 
 def NotFindPage(request):
 

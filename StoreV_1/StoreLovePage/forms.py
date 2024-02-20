@@ -1,4 +1,6 @@
 from django import forms
+from .models import Category, ShopItems, PictareForShop
+
 
 class User_LoginForm(forms.Form):
 
@@ -56,3 +58,58 @@ class User_RegistrationForm(forms.Form):
 		label="Почта", 
 		max_length=100,
 	)
+
+
+class Category_create(forms.ModelForm):
+	class Meta:
+		model = Category
+		fields = [ 'title', 'description', 'icon' ]
+		widgets = {
+			'title': forms.TextInput(attrs={
+				'class':'"form-control"'
+			}),
+			'description': forms.TextInput(attrs={
+				'class':'"form-control"'
+			}),
+		}
+		labels = {
+			'title':"Название",
+			'description':"Описание",
+			'icon':"Главная картинка",
+		}
+	
+		
+
+class ShopItems_create(forms.ModelForm):
+	class Meta:
+		model = ShopItems
+		fields = [
+			'title', 'description', 'currency', 'price', 'icon'
+		]
+		widgets = {
+			'title': forms.TextInput(attrs={
+				'class':'"form-control"'
+			}),
+			'description': forms.TextInput(attrs={
+				'class':'"form-control"'
+			}),
+			'currency': forms.TextInput(attrs={
+				'class':'"form-control"'
+			}),
+		}
+
+		labels = {
+			'title':"Название",
+			'description':"Описание",
+			'currency':"Валюта",
+			'price':"Цена",
+			'icon':"Главная картинка",
+		}
+
+
+class PictureForShop_create(forms.ModelForm):
+	class Meta:
+		model = PictareForShop
+		fields = ['picture']
+		labels = {'picture':"Изображение"}
+			
