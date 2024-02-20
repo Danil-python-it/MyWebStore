@@ -22,7 +22,7 @@ from StoreLovePage import views
 user_patterns = (
 	[
 		path("profile",views.NotFindPage, name="profile"),
-		path("login", views.NotFindPage, name="login"),
+		path("login", views.LoginPage, name="login"),
 		path("logout", views.NotFindPage, name="logout"),
 		path("registration", views.NotFindPage, name="registration")
     ]

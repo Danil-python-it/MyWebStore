@@ -1,0 +1,13 @@
+{% extends "BaseTamp/BaseBlock.html" %}
+
+{% block title %}Вход{% endblock title %}
+{% block content %}
+
+<form action="" method="post">
+	{% csrf_token %}
+	{{ form }}
+	<button type="submit" class="btn btn-info">Войти</button>
+</form>
+
+
+{% endblock content %}
