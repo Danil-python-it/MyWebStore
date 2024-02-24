@@ -1,8 +1,17 @@
 {% extends "BaseTamp/BaseBlock.html" %}
+{% load static %}
 
 {% block title %}Профиль | {{user.username}}{% endblock title %}
 {% block content %}
 <div class="d-flex flex-column justify-content-center align-items-center text-center position-absolute top-50 start-50 translate-middle border rounded-4" style="height: 500px; width: 500px;">
+	<div>
+		{% if is_avatars  %}
+			<img style="margin-bottom: 20px; width: 150px; height: 150px; border-radius: 100%;" src="/media/{{profile.avatars}}" alt="{{profile.avatars}}">
+		{% else %}
+			<img style="margin-bottom: 20px; width: 150px; height: 150px; border-radius: 100%;" src="{% static 'user.png' %}">
+		{% endif %}
+	</div>
+
 	<div>
 		<p class="h2">{{user.username}}</p>
 		<p class="h2">{{user.email}}</p>
@@ -15,11 +24,13 @@
 			<a href="/user/logout" class="btn btn-warning"><p class="h4">Выйти</p></a>
 		</div>	
 		<div class="m-4">
-			<a href="/shop/list" class="btn btn-info"><p class="h4">Товары</p></a>
+			<a href="/" class="btn btn-info"><p class="h4">Главная страница</p></a>
 		</div>
-		<div class="m-4">
-			<a href="/" class="btn btn-light"><p class="h4">Корзина</p></a>
-		</div>
+		{% if user.is_superuser == False %}
+		<li>
+			<a class="btn btn-light" href="/user/baskets">Корзина</a>
+		</li>
+		{% endif %}
 	</div>
 </div>
 

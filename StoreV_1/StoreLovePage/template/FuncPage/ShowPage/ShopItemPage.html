@@ -1,7 +1,7 @@
 {% extends "BaseTamp/BaseBlock.html" %}
 {% load static %}
 
-{% block title %}Лента товаров{% endblock title %}
+{% block title %}{{item.title}}{% endblock title %}
 
 {% block New_Link_Items %}
 
@@ -36,8 +36,12 @@
 	</div>
 
 	<div class="d-flex">
-
-
+		{% if user.is_superuser == False %}
+		<form action="" method="post" class="form-submit">
+			{% csrf_token %}
+			<input type="submit" name="{{item.id}}" id="{{item.id}}" value="добавить">
+		</form>
+		{% endif %}
 		
 	</div>
 

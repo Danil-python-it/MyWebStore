@@ -1,7 +1,7 @@
 {% extends "BaseTamp/BaseBlock.html" %}
 {% load static %}
 
-{% block title %}Лента товаров{% endblock title %}
+{% block title %}{{category.title}}{% endblock title %}
 
 {% block New_Link_Items %}
 	<link rel="stylesheet" href="{% static 'style.css' %}">
@@ -13,6 +13,7 @@
 	<section class="body">
 		<div class="ctn_body">
 			{% for item in shop_items %}
+			<a href="/show/shopitem/{{item.id}}">
 				<div class="cards">
 					<img class="cards-icon" src="/media/{{item.icon}}" alt="{{item.icon}}">
 					<div class="cards-info">
@@ -25,7 +26,7 @@
 						</div>
 					</div>
 				</div>
-
+			</a>
 			{% endfor %}
 		</div>
 	</section>

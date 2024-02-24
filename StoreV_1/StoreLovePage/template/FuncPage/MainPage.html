@@ -15,13 +15,16 @@
 			</div>
 			<div class="ctn_menu">
 				<ul class="menu">
-					<li>
-						<a class="btn btn-light" href="">Корзина</a>
-					</li>
+					
 					{% if user.is_authenticated %}
 					<li>
 						<a class="btn btn-light" href="/user/profile">Профиль</a>
 					</li>
+						{% if user.is_superuser == False %}
+						<li>
+							<a class="btn btn-light" href="/user/baskets">Корзина</a>
+						</li>
+						{% endif %}
 					{% else %}
 					<li>
 						<a class="btn btn-light" href="/user/login">Войти</a>
@@ -63,15 +66,20 @@
 			{% for item in shop_items %}
 				<a href="/show/shopitem/{{item.id}}">
 					<div class="cards">
-						<img class="cards-icon" src="media/{{item.icon}}" alt="{{item.icon}}">
+						<img class="cards-im" src="media/{{item.icon}}" alt="{{item.icon}}">
 						<div class="cards-info">
-	
 							<div class="cards-info-items">
 								{{item.title}}
 							</div>
 							<div class="cards-info-items">
 								{{item.price}} {{item.currency}}
 							</div>
+							{% if user.is_superuser == False %}
+							<form action="" method="post" class="form-submit">
+								{% csrf_token %}
+								<input type="submit" name="{{item.id}}" id="{{item.id}}" value="добавить">
+							</form>
+							{% endif %}
 						</div>
 					</div>
 				</a>

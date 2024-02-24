@@ -6,10 +6,16 @@
 		<h1>Регистрация</h1>
 	</div>
 	
-	<form action="" method="post" class="m-5 d-flex flex-column justify-content-evenly align-items-center">
+	<form action="" method="post" enctype="multipart/form-data" class="m-5 d-flex flex-column justify-content-evenly align-items-center">
 		{% csrf_token %}
 		<div style="width: 300px;">
 			{% for field in form %}
+				<div class="mb-3">
+					<label class="form-label" for="{{field.auto_id}}">{{field.label}}</label>
+					<span>{{field}}</span>
+				</div>
+			{% endfor %}
+			{% for field in form2 %}
 				<div class="mb-3">
 					<label class="form-label" for="{{field.auto_id}}">{{field.label}}</label>
 					<span>{{field}}</span>

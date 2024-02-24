@@ -1,0 +1,27 @@
+{% extends "BaseTamp/BaseBlock.html" %}
+{% load static %}
+
+{% block title %}Корзина | {{user}}{% endblock title %}
+
+{% block New_Link_Items %}
+	<link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock New_Link_Items %}
+
+{% block content %}
+{% for item in shop_items %}
+<a href="/show/shopitem/{{item.id}}">
+	<div class="cards">
+		<img class="cards-im" src="/media/{{item.icon}}" alt="{{item.icon}}">
+		<div class="cards-info">
+			<div class="cards-info-items">
+				{{item.title}}
+			</div>
+			<div class="cards-info-items">
+				{{item.price}} {{item.currency}}
+			</div>
+		</div>
+	</div>
+</a>
+
+{% endfor %}
+{% endblock content %}

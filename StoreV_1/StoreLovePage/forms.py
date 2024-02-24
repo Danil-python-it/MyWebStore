@@ -1,5 +1,17 @@
 from django import forms
-from .models import Category, ShopItems, PictareForShop
+from .models import Profile ,Category, ShopItems
+
+
+	
+
+class Profile_Form(forms.ModelForm):
+	class Meta:
+		model = Profile
+		fields = ['avatars']
+		labels = {
+			'avatars':"Фото аккаунта",
+		}
+
 
 
 class User_LoginForm(forms.Form):
@@ -79,9 +91,9 @@ class Category_create(forms.ModelForm):
 	
 		
 
-CHOICES_category = [ (category.id, category.title)
-		   for category in Category.objects.all() ]		
 
+
+CHOICES_category = [ (category.id, category.title) for category in Category.objects.all() ]		
 
 class ShopItems_create(forms.ModelForm):
 	category =  forms.ChoiceField(choices=CHOICES_category)
@@ -111,8 +123,6 @@ class ShopItems_create(forms.ModelForm):
 		}
 
 
-CHOICES_shopitems = [ (shopitem.id, shopitem.title)
-		   for shopitem in ShopItems.objects.all() ]		
 
 
 class MultipleFileInput(forms.ClearableFileInput):
@@ -136,4 +146,3 @@ class MultipleFileField(forms.FileField):
 class PictureForShop_create(forms.Form):
 	picture = MultipleFileField()
 
-	
