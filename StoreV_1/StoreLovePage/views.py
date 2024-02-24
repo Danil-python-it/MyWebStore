@@ -140,6 +140,7 @@ def ProfilePage(request):
 	return render(request, "FuncPage/ProfilePage.html", content)
 
 
+
 #MainContent
 def CategoryCreatePage(request):
 	if request.user.is_superuser == False: return redirect("/")

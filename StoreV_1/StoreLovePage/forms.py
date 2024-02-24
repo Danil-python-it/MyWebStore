@@ -2,6 +2,7 @@ from django import forms
 from .models import Profile ,Category, ShopItems
 
 
+
 	
 
 class Profile_Form(forms.ModelForm):
@@ -91,16 +92,22 @@ class Category_create(forms.ModelForm):
 	
 		
 
+#CHOICES = [ (i.id, i.title) for i in Category.objects.all() ]	
 
 
-CHOICES_category = [ (category.id, category.title) for category in Category.objects.all() ]		
 
 class ShopItems_create(forms.ModelForm):
-	category =  forms.ChoiceField(choices=CHOICES_category)
+	'''
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+
+		self.fields['category'].choices = CHOICES
+	'''
+
 	class Meta:
 		model = ShopItems
 		fields = [
-			'title', 'description', 'currency', 'price', 'icon'
+			'title', 'description', 'currency', 'price', 'icon', 'category'
 		]
 		widgets = {
 			'title': forms.TextInput(attrs={
