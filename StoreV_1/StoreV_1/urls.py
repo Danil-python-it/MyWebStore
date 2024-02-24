@@ -29,24 +29,27 @@ user_patterns = (
 		path("registration", views.RegistionPage, name="registration")
     ]
 )
-shop_patterns = (
+show_patterns = (
 	[
-		path("list",views.ShopPage, name="List"),
+		path("category/<int:id>",views.CategoryPage, name="Category"),
+		path("shopitem/<int:id>", views.ShopItemPage, name="ShopItem"),
+
     ]
 )
 admin_patterns = (
 	[
 		path("category",views.CategoryCreatePage, name="crt"),
+		path("shop_items",views.ShopItemsCreatePage, name="shit"),
     ]
 )
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-	path('AD_panel/', include(admin_patterns)),
+	path('create/', include(admin_patterns)),
 	path('', views.MainPage, name="MainPage"),
-	path('shop/', include(shop_patterns)),
 	path('user/', include(user_patterns)),
+    path('show/', include(show_patterns))
 ]
 
 if settings.DEBUG:

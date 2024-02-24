@@ -1,0 +1,44 @@
+{% extends "BaseTamp/BaseBlock.html" %}
+{% load static %}
+
+{% block title %}Лента товаров{% endblock title %}
+
+{% block New_Link_Items %}
+
+{% endblock New_Link_Items %}
+
+{% block content %}
+	<img style="width: 400px; height: 400px; margin-top: 50px;" src="/media/{{item.icon}}" alt="{{item.icon}}">
+	<p class="h1">{{item.title}}</p>
+	<p class="h1">{{item.description}}</p>
+	<span class="d-flex">
+		<p class="h1">{{item.price}}</p>
+		<p class="h1">{{item.currency}}</p>
+	</span>1
+	<div style="height: 800px;" class="m-4">
+		<div style="width: 1000px;" id="carouselExample" class="carousel slide">
+			<div style="width: 1000px; height: 800px;" class="carousel-inner">
+				{% for item in images %}
+				<div class="carousel-item active">
+					<img style="width: 1000px; height: 100%;" src="/media/{{item.picture}}" alt="{{item.picture}}" class="d-block w-100">
+				</div>
+				{% endfor %}
+			</div>
+			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+			  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			  <span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+			  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+			  <span class="visually-hidden">Next</span>
+			</button>
+		  </div>
+	</div>
+
+	<div class="d-flex">
+
+
+		
+	</div>
+
+{% endblock content %}

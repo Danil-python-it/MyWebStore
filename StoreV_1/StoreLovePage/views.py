@@ -10,11 +10,12 @@ from .models import Category, ShopItems, PictareForShop
 # MainPage
 
 def MainPage(request):
-	context={
-		"status":200,
+	Objs = list(reversed(ShopItems.objects.all()))
+	content = {
+		"category":Category.objects.all(),
+		"shop_items":Objs[:12],
 	}
-	return render(request, "FuncPage/MainPage.html", context)
-
+	return render(request, "FuncPage/MainPage.html", content)
 
 #UserPage
 def LoginPage(request):
@@ -31,10 +32,8 @@ def LoginPage(request):
 			user = authenticate(request, username=data["user_name"], password=data["user_password"])
 			if user is not None:
 				login(request, user)
-				print("it's ok")
 				return redirect("/user/profile")
 			else:
-				print("warning!!!")
 				form = User_LoginForm(request.POST)
 	
 	else:
@@ -69,10 +68,8 @@ def RegistionPage(request):
 			if user is not None:
 				user.save()
 				login(request, user)
-				print("it's ok")
 				return redirect("/user/profile")
 			else:
-				print("warning!!!")
 				form = User_RegistrationForm(request.POST)
 	
 	else:
@@ -92,30 +89,16 @@ def ProfilePage(request):
 
 
 #MainContent
-
-def ShopPage(request):
-	content = {
-		"category":Category.objects.all()
-	}
-	return render(request, "FuncPage/ShopPage.html", content)
-
-
 def CategoryCreatePage(request):
-	if request.user.is_superuser == False: return redirect("/shop/list")
+	if request.user.is_superuser == False: return redirect("/")
 
 	if request.method == "POST":
 		form = Category_create(request.POST,request.FILES)
-		
+
 		if form.is_valid():
 			form.save()
-			return redirect("/shop/list")
-		else:
-			print("warning")
-			print(request)
-			print(request.POST)
-			print(request.FILES)
-			
-
+			return redirect("/")
+		
 	else:
 		form = Category_create()
 
@@ -126,11 +109,64 @@ def CategoryCreatePage(request):
 
 	return render(request, "FuncPage/CreateModels/Category.html", content)
 
+def ShopItemsCreatePage(request):
+	if request.user.is_superuser == False: return redirect("/")
 
+	if request.method == "POST":
+		form = ShopItems_create(request.POST,request.FILES)
+		images_input = PictureForShop_create(request.FILES)
 
+		if form.is_valid() and images_input.is_valid():
+			print()
+			Obj = ShopItems(
+				title=request.POST["title"],
+				description=request.POST["description"],
+				price=int(request.POST["price"]),
+				currency=request.POST["currency"],
+				category_id=int(request.POST["category"]),
+				icon=request.FILES["icon"],
+			)
+			Obj.save()
+			images_input = dict(request.FILES)["picture"]
 
+			for index in range(0,len(images_input)):
+				image = PictareForShop(
+					picture=images_input[index],
+					shopitems_id=Obj.id
+				)
+				image.save()
+			
+			return redirect("/")
+				
+	else:
+		form = ShopItems_create()
+		images_input = PictureForShop_create()
 
+	content = {
+		"status":200,
+		"form":form,
+		"images_input":images_input,
+	}
 
+	return render(request, "FuncPage/CreateModels/ShopItems.html", content)
+
+def CategoryPage(request,id):
+	print(id)
+	content={
+		"category":Category.objects.get(id=id),
+		"shop_items":ShopItems.objects.all().filter(category_id=id)
+		
+	}
+	return render(request,'FuncPage/ShowPage/CategoryPage.html', content)
+	
+
+def ShopItemPage(request,id):
+	print(id)
+	content={
+		"item":ShopItems.objects.get(id=id),
+		"images":PictareForShop.objects.all().filter(shopitems_id=id),
+	}
+	return render(request,'FuncPage/ShowPage/ShopItemPage.html', content)
 
 
 

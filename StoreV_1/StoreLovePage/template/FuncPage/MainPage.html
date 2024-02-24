@@ -1,34 +1,82 @@
 {% extends "BaseTamp/BaseBlock.html" %}
+{% load static %}
 
-{% block title %}MainPage{% endblock title %}
+{% block title %}Лента товаров{% endblock title %}
+
+{% block New_Link_Items %}
+	<link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock New_Link_Items %}
+
 {% block content %}
-	<div class="row" style="height: 50vh;">
-		<div class="d-flex text-center justify-content-center flex-column h-75 col m-3 p-3 border rounded-4 " style="background-color: rgba(var(--bs-warning-rgb),100);">
-			<p class="h1"> Главная страница</p>
-			<p class="h2">статус подключения - {{status}}</p>
+	<section class="header">
+		<div class="container_header">
+			<div class="LogoTitle">
+				<p class="h1">LogoPage</p>
+			</div>
+			<div class="ctn_menu">
+				<ul class="menu">
+					<li>
+						<a class="btn btn-light" href="">Корзина</a>
+					</li>
+					{% if user.is_authenticated %}
+					<li>
+						<a class="btn btn-light" href="/user/profile">Профиль</a>
+					</li>
+					{% else %}
+					<li>
+						<a class="btn btn-light" href="/user/login">Войти</a>
+					</li>
+					{% endif %}
+					{% if user.is_superuser %}
+					<li>
+						<div class="dropdown">
+							<button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+							  Панель
+							</button>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="/create/category">Категории</a></li>
+								<li><a class="dropdown-item" href="/create/shop_items">Позиции</a></li>
+								<li><a class="dropdown-item" href="#">Админы</a></li>
+							</ul>
+						</div>				
+					</li>
+					{% endif %}
+					<li>
+						<div class="dropdown">
+							<button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+							  Категории
+							</button>
+							<ul class="dropdown-menu">
+								{% for i in category %}
+							  	<li><a class="dropdown-item" href="/show/category/{{i.id}}">{{i.title}}</a></li>
+								{% endfor %}
+							</ul>
+						</div>
+					</li>
+	
+				</ul>
+			</div>
 		</div>
-
-		
-		{% if user.is_authenticated %}
-			<div class="text-center d-flex justify-content-center flex-column h-75 col p-3 m-3 border rounded-4 ">
-				<p class="h1">{{ user.get_username }}</p>
-				<p class="h2">Добро пожаловать на шаблон Магазина продаж</p>
-				<div class="d-flex justify-content-evenly m-3">
-					<div>
-						<a href="/shop/list" class="btn btn-info"><p class="h4">Товары</p></a>
+	</section>
+	<section class="body">
+		<div class="ctn_body">
+			{% for item in shop_items %}
+				<a href="/show/shopitem/{{item.id}}">
+					<div class="cards">
+						<img class="cards-icon" src="media/{{item.icon}}" alt="{{item.icon}}">
+						<div class="cards-info">
+	
+							<div class="cards-info-items">
+								{{item.title}}
+							</div>
+							<div class="cards-info-items">
+								{{item.price}} {{item.currency}}
+							</div>
+						</div>
 					</div>
-					<div>
-						<a href="/user/profile" class="btn border"><p class="h4">Профиль</p></a>
-					</div>	
-				</div>
-			</div>
-		{% else %}
-			<div class="text-center d-flex justify-content-center flex-column h-75 col p-3 m-3 border rounded-4 ">
-				<p class="h1 m-4">Вам нужно войти в аккаунт</p>
-				<div class="m-4">
-					<a href="/user/login" class="btn btn-danger"><p class="h4">Войти</p></a>
-				</div>
-			</div>
-		{% endif %}
-	</div>
+				</a>
+
+			{% endfor %}
+		</div>
+	</section>
 {% endblock content %}

@@ -1,0 +1,32 @@
+{% extends "BaseTamp/BaseBlock.html" %}
+{% load static %}
+
+{% block title %}Лента товаров{% endblock title %}
+
+{% block New_Link_Items %}
+	<link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock New_Link_Items %}
+
+{% block content %}
+	<p class="h1">{{category.title}}</p>
+	<p class="h1">{{category.description}}</p>
+	<section class="body">
+		<div class="ctn_body">
+			{% for item in shop_items %}
+				<div class="cards">
+					<img class="cards-icon" src="/media/{{item.icon}}" alt="{{item.icon}}">
+					<div class="cards-info">
+
+						<div class="cards-info-items">
+							{{item.title}}
+						</div>
+						<div class="cards-info-items">
+							{{item.price}} {{item.currency}}
+						</div>
+					</div>
+				</div>
+
+			{% endfor %}
+		</div>
+	</section>
+{% endblock content %}

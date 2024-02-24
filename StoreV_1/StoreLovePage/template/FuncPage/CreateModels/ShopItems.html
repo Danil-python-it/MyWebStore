@@ -1,11 +1,18 @@
 {% extends "BaseTamp/BaseBlock.html" %}
 
-{% block title %}Создание новой категории{% endblock title %}
+{% block title %}Создание новой позиции{% endblock title %}
 {% block content %}
 <form action="" method="post" enctype="multipart/form-data" class="m-5 d-flex flex-column justify-content-evenly align-items-center">
 	{% csrf_token %}
 	<div style="width: 300px;">
 		{% for field in form %}
+			<div class="mb-3">
+				<label class="form-label" for="{{field.auto_id}}">{{field.label}}</label>
+				<span>{{field}}</span>
+			</div>
+		{% endfor %}
+		
+		{% for field in images_input %}
 			<div class="mb-3">
 				<label class="form-label" for="{{field.auto_id}}">{{field.label}}</label>
 				<span>{{field}}</span>

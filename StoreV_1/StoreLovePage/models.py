@@ -6,7 +6,6 @@ import os
 class Category(models.Model):
 	title = models.CharField(max_length=30)
 	description = models.CharField(max_length=30)
-	icon = models.ImageField(upload_to='images/')
 
 class ShopItems(models.Model):
 	title = models.CharField(max_length=30)
@@ -15,7 +14,6 @@ class ShopItems(models.Model):
 	currency = models.CharField(max_length=30)
 	category = models.ForeignKey(Category, on_delete=models.CASCADE)
 	icon = models.ImageField(upload_to='images/')
-
 
 
 class PictareForShop(models.Model):

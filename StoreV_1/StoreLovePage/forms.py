@@ -63,7 +63,7 @@ class User_RegistrationForm(forms.Form):
 class Category_create(forms.ModelForm):
 	class Meta:
 		model = Category
-		fields = [ 'title', 'description', 'icon' ]
+		fields = [ 'title', 'description']
 		widgets = {
 			'title': forms.TextInput(attrs={
 				'class':'"form-control"'
@@ -75,12 +75,16 @@ class Category_create(forms.ModelForm):
 		labels = {
 			'title':"Название",
 			'description':"Описание",
-			'icon':"Главная картинка",
 		}
 	
 		
 
+CHOICES_category = [ (category.id, category.title)
+		   for category in Category.objects.all() ]		
+
+
 class ShopItems_create(forms.ModelForm):
+	category =  forms.ChoiceField(choices=CHOICES_category)
 	class Meta:
 		model = ShopItems
 		fields = [
@@ -107,9 +111,29 @@ class ShopItems_create(forms.ModelForm):
 		}
 
 
-class PictureForShop_create(forms.ModelForm):
-	class Meta:
-		model = PictareForShop
-		fields = ['picture']
-		labels = {'picture':"Изображение"}
-			
+CHOICES_shopitems = [ (shopitem.id, shopitem.title)
+		   for shopitem in ShopItems.objects.all() ]		
+
+
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = single_file_clean(data, initial)
+        return result
+
+
+class PictureForShop_create(forms.Form):
+	picture = MultipleFileField()
+
+	
