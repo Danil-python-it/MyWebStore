@@ -74,16 +74,23 @@
 							<div class="cards-info-items">
 								{{item.price}} {{item.currency}}
 							</div>
+						</div>
+						{% if user.is_authenticated %}
 							{% if user.is_superuser == False %}
 							<form action="" method="post" class="form-submit">
 								{% csrf_token %}
 								<input type="submit" name="{{item.id}}" id="{{item.id}}" value="добавить">
 							</form>
+							{% else %}
+							<form action="" method="post" class="form-submit">
+								{% csrf_token %}
+								<input type="submit" name="{{item.id}}" id="{{item.id}}" value="удалить">
+							</form>
 							{% endif %}
-						</div>
+						{% endif %}
+							
 					</div>
 				</a>
-
 			{% endfor %}
 		</div>
 	</section>

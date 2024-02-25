@@ -12,12 +12,26 @@ from .models import Baskets, Profile, Category, ShopItems, PictareForShop
 def MainPage(request):
 	Objs = list(reversed(ShopItems.objects.all()))[:12]
 	if request.method == "POST":
-		shopitems_id = int(list(request.POST)[1])
-		basket = Baskets(
-			user_id=request.user.id,
-			shopitems_id=shopitems_id
-		)
-		basket.save()
+		if request.user.is_superuser:
+			shopitems_id = int(list(request.POST)[1])
+			baskets = list(Baskets.objects.all().filter(shopitems_id=shopitems_id))
+			for basket in baskets:
+				basket.delete()
+			pictares = list(PictareForShop.objects.all().filter(shopitems_id=shopitems_id))
+			for pictare in pictares:
+				pictare.delete()
+			ShopItems.objects.get(id=shopitems_id).delete()
+
+
+		elif len(Baskets.objects.all().filter(user_id=request.user.id,shopitems_id=int(list(request.POST)[1]))) == 0:
+			shopitems_id = int(list(request.POST)[1])
+			basket = Baskets(
+				user_id=request.user.id,
+				shopitems_id=shopitems_id
+			)
+			basket.save()
+		return redirect("/")
+		
 	content = {
 		"category":Category.objects.all(),
 		"shop_items":Objs,
@@ -27,10 +41,13 @@ def MainPage(request):
 #UserPage
 def BasketPage(request):
 
+	if request.method == "POST":
+		Baskets.objects.get(user_id=request.user.id,shopitems_id=int(list(request.POST)[1])).delete()
+
 	user_id = request.user.id
 	baskets = Baskets.objects.all().filter(user_id=user_id)
 	shop_items = [(ShopItems.objects.get(id=i.shopitems_id))for i in baskets]
-	print(shop_items)
+
 	content={
 		"status":200,
 		"shop_items":shop_items,
@@ -121,12 +138,23 @@ def RegistionPage(request):
 
 
 def ProfilePage(request):
+	if request.user.is_authenticated == False: return redirect("/user/login")
+
+	if request.method == "POST":
+		
+		baskets = list(Baskets.objects.all().filter(user_id=request.user.id))
+		for basket in baskets:
+			basket.delete()
+		if len(Profile.objects.all().filter(user_id=request.user.id)) != 0:
+			Profile.objects.get(user_id=request.user.id).delete()
+		User.objects.get(id=request.user.id).delete()
+		logout(request)
+		return redirect("/")
+
 	if len(Profile.objects.all().filter(user_id=request.user.id)) > 0:
 		profile = Profile.objects.get(user_id = request.user.id)
 		is_avatars = True
-		print("yes")
 	else: 
-		print("no")
 		is_avatars = False
 		profile = "None"
 
@@ -170,7 +198,6 @@ def ShopItemsCreatePage(request):
 		images_input = PictureForShop_create(request.FILES)
 
 		if form.is_valid() and images_input.is_valid():
-			print()
 			Obj = ShopItems(
 				title=request.POST["title"],
 				description=request.POST["description"],
@@ -204,7 +231,6 @@ def ShopItemsCreatePage(request):
 	return render(request, "FuncPage/CreateModels/ShopItems.html", content)
 
 def CategoryPage(request,id):
-	print(id)
 	content={
 		"category":Category.objects.get(id=id),
 		"shop_items":ShopItems.objects.all().filter(category_id=id)

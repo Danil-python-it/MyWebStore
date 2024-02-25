@@ -20,6 +20,10 @@
 				{{item.price}} {{item.currency}}
 			</div>
 		</div>
+		<form action="" method="post" class="form-submit">
+			{% csrf_token %}
+			<input type="submit" name="{{item.id}}" id="{{item.id}}" value="Удалить">
+		</form>
 	</div>
 </a>
 
